@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
 
 
-class CreateCategoryGroupsTable extends Migration
+class CreateShoppingbagVersionTable extends Migration
 {
     /**
      * Run the migrations.
@@ -15,14 +15,13 @@ class CreateCategoryGroupsTable extends Migration
      */
     public function up()
     {
-        Schema::create('category_groups', function (Blueprint $table) {
-            $table->string('group_id')->primary();
-            $table->string('group_name')->nullable(false);
-            $table->string('group_image_id')->index();
-            $table->text('group_detail');
+        //TODO : isi tabel (cari tau gunanya pivot table dan nanti ngisi datanya gimana)
+        Schema::create('shoppingbag_version', function (Blueprint $table) {
+            $table->string('shoppingbag_id')->nullable(false)->index();
+            $table->string('version_id')->nullable(false)->index();
             $table->timestamps();
-            
-            //Foreign Key : image_id
+
+            //Foreign Key : shoppingbag_id, version_id
         });
     }
 
@@ -34,7 +33,7 @@ class CreateCategoryGroupsTable extends Migration
     public function down()
     {
         DB::statement('SET FOREIGN_KEY_CHECKS=0');
-        Schema::dropIfExists('category_groups');
+        Schema::dropIfExists('shoppingbag_version');
         DB::statement('SET FOREIGN_KEY_CHECKS=1');
     }
 }

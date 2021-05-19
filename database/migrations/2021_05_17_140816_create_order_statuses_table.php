@@ -16,11 +16,13 @@ class CreateOrderStatusesTable extends Migration
     {
         Schema::create('order_statuses', function (Blueprint $table) {
             $table->string('order_id')->primary();
+            $table->string('order_shoppingbag_id')->nullable(false)->index();
             $table->integer('order_total')->default(0)->nullable(false);
+            $table->text('order_receiver')->nullable(false);
             $table->enum('order_state', ['Processed', 'Shipping', 'Delivered'])->nullable(false);
             $table->timestamps();
 
-            //Foreign Key : user_id
+            //Foreign Key : user_id, shopping_id
         });
     }
 

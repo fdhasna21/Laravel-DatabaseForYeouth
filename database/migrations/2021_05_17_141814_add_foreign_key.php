@@ -27,22 +27,21 @@ class AddForeignKey extends Migration
         });
 
         Schema::table('shoppingbags', function(Blueprint $table){
-            //product_id, version_id, user_id
-            $table->foreign('shoppingbag_product_id', 'fk_shoppingbag_product_id')->references('product_id')->on('main_products')->onUpdate('RESTRICT')->onDelete('RESTRICT');
+            //version_id, user_id
             $table->foreign('shoppingbag_version_id', 'fk_shoppingbag_version_id')->references('version_id')->on('version_products')->onUpdate('RESTRICT')->onDelete('RESTRICT');
-            $table->foreignId('user_id')->constrained();
-        });
-
-        Schema::table('order_lists', function(Blueprint $table){
-            //order_id, shoppingbag_id, user_id
-            $table->foreign('order_list_id', 'fk_order_list_id')->references('order_id')->on('order_statuses')->onUpdate('RESTRICT')->onDelete('RESTRICT');
-            $table->foreign('order_shoppingbag_id', 'fk_order_shoppingbag_id')->references('shoppingbag_id')->on('shoppingbags')->onUpdate('RESTRICT')->onDelete('RESTRICT');
             $table->foreignId('user_id')->constrained();
         });
 
         Schema::table('order_statuses', function(Blueprint $table){
             //user_id
+            $table->foreign('order_shoppingbag_id', 'fk_order_shoppingbag_id')->references('shoppingbag_id')->on('shoppingbags')->onUpdate('RESTRICT')->onDelete('RESTRICT');
             $table->foreignId('user_id')->constrained();
+        });
+
+        Schema::table('shoppingbag_version', function(Blueprint $table){
+            //shoppingbag_id, version_id
+            $table->foreign('shoppingbag_id', 'fk_sv_shoppingbag_id')->references('shoppingbag_id')->on('shoppingbags')->onUpdate('RESTRICT')->onDelete('RESTRICT');
+            $table->foreign('version_id', 'fk_sv_version_id')->references('version_id')->on('version_products')->onUpdate('RESTRICT')->onDelete('RESTRICT');
         });
     }
 
@@ -59,7 +58,8 @@ class AddForeignKey extends Migration
         Schema::dropIfExists('fk_version_product_id');
         Schema::dropIfExists('fk_shoppingbag_product_id');
         Schema::dropIfExists('fk_shoppingbag_version_id');
-        Schema::dropIfExists('fk_order_list_id');
         Schema::dropIfExists('fk_order_shoppingbag_id');
+        Schema::dropIfExists('fk_sv_shoppingbag_id');
+        Schema::dropIfExists('fk_sv_version_id');
     }
 }

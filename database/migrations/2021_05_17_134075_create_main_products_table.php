@@ -29,7 +29,7 @@ class CreateMainProductsTable extends Migration
             $table->integer('product_wishlisted')->default(0)->nullable(false);
             $table->timestamps();
 
-            //Foreign Key : version_ID, image_ID, category_ID, group_ID
+            //Foreign Key : version_id, image_id, category_id, group_id
         });
     }
 

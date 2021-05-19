@@ -18,8 +18,10 @@ class CreateCategoryMerchandisesTable extends Migration
         Schema::create('category_merchandises', function (Blueprint $table) {
             $table->string('merchandise_id')->primary();
             $table->string('merchandise_name')->nullable(false);
+            $table->string('merchandise_image_id')->index();
             $table->timestamps();
-            //Foreign Key : image_ID
+            
+            //Foreign Key : image_id
         });
     }
 

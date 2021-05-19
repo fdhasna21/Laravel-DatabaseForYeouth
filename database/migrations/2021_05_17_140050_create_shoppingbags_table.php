@@ -16,12 +16,11 @@ class CreateShoppingbagsTable extends Migration
     {
         Schema::create('shoppingbags', function (Blueprint $table) {
             $table->string('shoppingbag_id')->primary();
-            $table->string('shoppingbag_product_id')->nullable(false)->index();
             $table->string('shoppingbag_version_id')->nullable(false)->index();
             $table->integer('shoppingbag_quantity')->nullable(false);
             $table->timestamps();
 
-            //Foreign Key : product_id, version_id, user_id
+            //Foreign Key : version_id, user_id
         });
     }
 
