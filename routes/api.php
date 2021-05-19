@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\v1\LoginController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -17,3 +18,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+//Connect LoginController with its route
+Route::post('/v1/login', [LoginController::class, 'login']);
+Route::middleware('auth:api')->get('/v1/logout', [LoginController::class, 'logout']);

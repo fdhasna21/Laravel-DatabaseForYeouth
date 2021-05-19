@@ -24,7 +24,7 @@ class User extends Authenticatable
 
     /**
      * The attributes that should be hidden for arrays.
-     *
+     * column that hidden from SELECT * in SQL
      * @var array
      */
     protected $hidden = [
