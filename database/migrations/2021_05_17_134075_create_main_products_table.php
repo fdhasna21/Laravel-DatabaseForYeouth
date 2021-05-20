@@ -16,7 +16,6 @@ class CreateMainProductsTable extends Migration
     {
         Schema::create('main_products', function (Blueprint $table) {
             $table->string('product_id')->primary();
-            $table->string('product_version_id')->nullable(false)->index();
             $table->string('product_image_id')->index();
             $table->string('product_merchandise_id')->nullable(false)->index();
             $table->string('product_group_id')->nullable(false)->index();

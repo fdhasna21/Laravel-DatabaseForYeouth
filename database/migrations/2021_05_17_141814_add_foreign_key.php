@@ -14,16 +14,20 @@ class AddForeignKey extends Migration
      */
     public function up()
     {
+        Schema::table('user_details', function(Blueprint $table){
+            //user_id, image_id
+            $table->foreignId('user_id')->constrained();
+        });
+
         Schema::table('main_products', function (Blueprint $table) {
             //version_id, image_id, category_id, group_id
-            $table->foreign('product_version_id', 'fk_product_version_id')->references('version_id')->on('version_products')->onUpdate('RESTRICT')->onDelete('RESTRICT');
             $table->foreign('product_merchandise_id', 'fk_product_merchandise_id')->references('merchandise_id')->on('category_merchandises') ->onUpdate('RESTRICT')->onDelete('RESTRICT');
             $table->foreign('product_group_id', 'fk_product_group_id')->references('group_id')->on('category_groups')->onUpdate('RESTRICT')->onDelete('RESTRICT');
         });
 
         Schema::table('version_products', function (Blueprint $table) {
             //product_id, image_id
-            $table->foreign('version_product_id', 'fk_version_product_id')->references('product_id')->on('main_products')->onUpdate('RESTRICT')->onDelete('RESTRICT');
+            $table->foreign('version_product_id', 'fk_version_product_id')->references('product_id')->on('main_products')->onUpdate('CASCADE')->onDelete('RESTRICT');
         });
 
         Schema::table('shoppingbags', function(Blueprint $table){
@@ -52,7 +56,6 @@ class AddForeignKey extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('fk_product_version_id');
         Schema::dropIfExists('fk_product_merchandise_id');
         Schema::dropIfExists('fk_product_group_id');
         Schema::dropIfExists('fk_version_product_id');
