@@ -16,12 +16,11 @@ class CreateCategoryGroupsTable extends Migration
     public function up()
     {
         Schema::create('category_groups', function (Blueprint $table) {
-            $table->string('group_id')->primary();
+            $table->id();
             $table->string('group_name')->nullable(false);
-            $table->string('group_image_id')->index();
-            $table->text('group_detail');
+            $table->text('group_detail')->default('');
             $table->timestamps();
-            
+
             //Foreign Key : image_id
         });
     }

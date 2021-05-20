@@ -17,8 +17,7 @@ class CreateShoppingbagVersionTable extends Migration
     {
         //TODO : isi tabel (cari tau gunanya pivot table dan nanti ngisi datanya gimana)
         Schema::create('shoppingbag_version', function (Blueprint $table) {
-            $table->string('shoppingbag_id')->nullable(false)->index();
-            $table->string('version_id')->nullable(false)->index();
+            $table->id();
             $table->timestamps();
 
             //Foreign Key : shoppingbag_id, version_id

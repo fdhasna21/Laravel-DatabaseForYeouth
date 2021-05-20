@@ -15,14 +15,11 @@ class CreateMainProductsTable extends Migration
     public function up()
     {
         Schema::create('main_products', function (Blueprint $table) {
-            $table->string('product_id')->primary();
-            $table->string('product_image_id')->index();
-            $table->string('product_merchandise_id')->nullable(false)->index();
-            $table->string('product_group_id')->nullable(false)->index();
+            $table->id();
             $table->string('product_name')->nullable(false);
             $table->string('product_category')->nullable(false);
-            $table->text('product_detail')->nullable(false);
-            $table->date('product_release')->nullable(false);
+            $table->text('product_detail')->default('')->nullable(false);
+            $table->date('product_release')->default(now())->nullable(false);
             $table->integer('product_sold')->default(0)->nullable(false);
             $table->float('product_rate', 3, 2)->default(0.00)->nullable(false);
             $table->integer('product_wishlisted')->default(0)->nullable(false);

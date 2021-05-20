@@ -10,9 +10,9 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    //TODO : belum bisa masukin versionproduct ke array mainproduct-nya
     public function all(){
-        return response(['product' => MainProduct::all()]);
+        $products = MainProduct::with('versionProducts')->get();
+        return response(['product' => $products]);
     }
 
     public function each(Request $request){
@@ -21,9 +21,12 @@ class ProductController extends Controller
             'version_id' => 'required_without:product_id'
         ]);
 
-        //TODO : ambil product berdasarkan version_id
         if(isset($request->product_id)){
-            return response(['product' => array(MainProduct::where('product_id', '=', $request->product_id)->first())]);
+            return response(['product' => MainProduct::where('id', '=', $request->product_id)->with('versionProducts')->get()]);
+        }
+        if(isset($request->version_id)){
+            $product_by_version = VersionProduct::where('id', '=', $request->version_id)->value('id');
+            return response(['product' => MainProduct::where('id', '=', $product_by_version)->with('versionProducts')->get()]);
         }
     }
 
@@ -35,14 +38,14 @@ class ProductController extends Controller
 
         //TODO : ambil productnya di limit
         if(isset($request->group) && !isset($request->merchandise)){
-            return response(['product' => MainProduct::where('product_group_id', '=', $request->group)->get()]);
+            return response(['product' => MainProduct::where('category_group_id', '=', $request->group)->with('versionProducts')->get()]);
         }
         else if(!isset($request->group) && isset($request->merchandise)){
-            return response(['product' => MainProduct::where('product_merchandise_id', '=', $request->merchandise)->get()]);
+            return response(['product' => MainProduct::where('category_merchandise_id', '=', $request->merchandise)->with('versionProducts')->get()]);
         }
         else if(isset($request->group) && isset($request->merchandise)){
-            return response(['product' => MainProduct::where('product_group_id', '=', $request->group)
-                                ->where('product_merchandise_id', '=', $request->merchandise)->get()]);
+            return response(['product' => MainProduct::where('category_group_id', '=', $request->group)
+                                ->where('category_merchandise_id', '=', $request->merchandise)->with('versionProducts')->get()]);
         }
     }
 
@@ -51,33 +54,6 @@ class ProductController extends Controller
         return response(['product' => MainProduct::where('product_name', 'LIKE', "%$keyword%")
                         ->orwhere('product_category', 'LIKE', "%$keyword%")
                         ->orwhere('product_detail', 'LIKE', "%$keyword%")
-                        ->get()]);
-    }
-
-    public function each2(Request $request){
-        $request->validate([
-            'product_id' => 'required_without:version_id',
-            'version_id' => 'required_without:product_id'
-        ]);
-
-        // $product = MainProduct::where('product_id', '=', $request->product_id)->get();
-        // // $version = VersionProduct::where('version_product_id', '=', $request->product_id)->get();
-        // foreach ($product as $eachversion) {
-        //     echo $eachversion->versionProducts->first();
-        //     // VersionProduct::where('version_product_id', '=', $request->product_id)->get();
-        // }
-        // return response(['product' => $product]);
-
-        $product = MainProduct::where('product_id', '=', $request->product_id)->get();
-        foreach ($product as $eachversion) {
-            echo $eachversion->versionProducts;
-            // VersionProduct::where('version_product_id', '=', $request->product_id)->get();
-        }
-        return response(['products' => $product]);
-    }
-
-    public function byGroup(CategoryGroup $group){
-        $product=$group->mainProducts;
-        return response(['product'=> $product]);
+                        ->with('versionProducts')->get()]);
     }
 }

@@ -36,6 +36,3 @@ Route::middleware('auth:api')->get('/v1/product/all', [ProductController::class,
 Route::middleware('auth:api')->get('/v1/product/each', [ProductController::class, 'each']);
 Route::middleware('auth:api')->get('/v1/product/search', [ProductController::class, 'byKeyword']);
 Route::middleware('auth:api')->get('/v1/product/category', [ProductController::class, 'byCategory']);
-
-Route::middleware('auth:api')->get('/v1/product/each2', [ProductController::class, 'each2']);
-Route::middleware('auth:api')->get('/v1/product/{group}', [ProductController::class, 'byGroup']);

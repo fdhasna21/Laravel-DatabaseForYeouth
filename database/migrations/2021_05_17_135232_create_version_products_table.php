@@ -15,12 +15,10 @@ class CreateVersionProductsTable extends Migration
     public function up()
     {
         Schema::create('version_products', function (Blueprint $table) {
-            $table->string('version_id')->primary();
-            $table->string('version_product_id')->index()->nullable(false);
-            $table->string('version_image_id')->index();
+            $table->id();
             $table->string('version_name')->nullable(false);
-            $table->text('version_detail');
-            $table->integer('version_price')->nullable(false);
+            $table->text('version_detail')->default('');
+            $table->integer('version_price')->default(0)->nullable(false);
             $table->integer('version_stock')->default(0)->nullable(false);
             $table->integer('version_sold')->default(0)->nullable(false);
             $table->timestamps();

@@ -8,8 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Shoppingbag extends Model
 {
-    use HasFactory, StringAsPrimary;
-    protected $primary_key  = 'shoppingbag_id';
+    use HasFactory;
     //1 Shoppingbag : 1 User, 1 OrderStatus
     //many Shoppingbag : many VersionProduct
 
@@ -18,11 +17,11 @@ class Shoppingbag extends Model
     }
 
     public function orderStatus(){
-        return $this->belongsTo(OrderStatus::class, 'order_shoppingbag_id');
+        return $this->belongsTo(OrderStatus::class);
     }
 
     //TODO: benerin many-to-many di Shoppingbag
     public function versionProducts(){
-        return $this->belongsToMany(VersionProduct::class, 'shoppingbag_version', 'shoppingbag_id', 'version_id');
+        return $this->belongsToMany(VersionProduct::class);
     }
 }

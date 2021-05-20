@@ -8,11 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class CategoryMerchandise extends Model
 {
-    use HasFactory, StringAsPrimary;
-    protected $primary_key  = 'merchandise_id';
+    use HasFactory;
 
     //1 CategoryMerchandise : many ProductMain
     public function mainProducts(){
-        return $this->hasMany(ProductMain::class, 'product_merchandise_id', 'merchandise_id');
+        return $this->hasMany(ProductMain::class);
     }
 }

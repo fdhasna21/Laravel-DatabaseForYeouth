@@ -8,12 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class OrderStatus extends Model
 {
-    use HasFactory, StringAsPrimary;
-    protected $primary_key  = 'order_id';
+    use HasFactory;
 
     //1 OrderStatus : many Shoppingbags, 1 User
     public function shoppingbags(){
-        return $this->hasMany(Shoppingbag::class, 'order_shoppingbag_id', 'shoppingbag_id');
+        return $this->hasMany(Shoppingbag::class);
     }
 
     public function user(){

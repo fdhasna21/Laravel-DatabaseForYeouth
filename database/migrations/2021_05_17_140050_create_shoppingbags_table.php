@@ -15,8 +15,7 @@ class CreateShoppingbagsTable extends Migration
     public function up()
     {
         Schema::create('shoppingbags', function (Blueprint $table) {
-            $table->string('shoppingbag_id')->primary();
-            $table->string('shoppingbag_version_id')->nullable(false)->index();
+            $table->id();
             $table->integer('shoppingbag_quantity')->nullable(false);
             $table->timestamps();
 

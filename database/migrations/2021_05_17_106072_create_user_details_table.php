@@ -15,12 +15,11 @@ class CreateUserDetailsTable extends Migration
     {
         Schema::create('user_details', function (Blueprint $table) {
             $table->id();
-            $table->string('user_image_id')->index();
             $table->text('user_address');
             $table->text('user_phone');
             $table->timestamps();
 
-            //Foreign Key : user_id
+            //Foreign Key : user_id, image_id
         });
     }
 

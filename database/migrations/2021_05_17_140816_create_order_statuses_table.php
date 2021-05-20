@@ -15,8 +15,7 @@ class CreateOrderStatusesTable extends Migration
     public function up()
     {
         Schema::create('order_statuses', function (Blueprint $table) {
-            $table->string('order_id')->primary();
-            $table->string('order_shoppingbag_id')->nullable(false)->index();
+            $table->id();
             $table->integer('order_total')->default(0)->nullable(false);
             $table->text('order_receiver')->nullable(false);
             $table->enum('order_state', ['Processed', 'Shipping', 'Delivered'])->nullable(false);

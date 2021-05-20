@@ -8,19 +8,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class MainProduct extends Model
 {
-    use HasFactory, StringAsPrimary;
-    protected $primary_key  = 'product_id';
+    use HasFactory;
 
     //1 MainProduct : 1 CategoryGroup, 1 CategoryMerchandise, many VersionProduct
     public function categoryGroup(){
-        return $this->belongsTo(CategoryGroup::class, 'product_group_id');
+        return $this->belongsTo(CategoryGroup::class);
     }
 
     public function categoryMerchandise(){
-        return $this->belongsTo(CategoryMerchandise::class, 'product_merchandise_id');
+        return $this->belongsTo(CategoryMerchandise::class);
     }
 
     public function versionProducts(){
-        return $this->hasMany(VersionProduct::class, 'product_version_id', 'version_id');
+        return $this->hasMany(VersionProduct::class);
     }
 }
