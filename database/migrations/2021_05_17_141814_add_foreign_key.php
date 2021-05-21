@@ -34,10 +34,10 @@ class AddForeignKey extends Migration
             //version_product_id, user_id
             $table->foreignId('version_product_id')->constrained();
             $table->foreignId('user_id')->constrained();
-            $table->foreignId('order_statuses_id')->nullable()->constrained()->onUpdate('CASCADE');
+            $table->foreignId('order_info_id')->nullable()->constrained()->onUpdate('CASCADE');
         });
 
-        Schema::table('order_statuses', function(Blueprint $table){
+        Schema::table('order_infos', function(Blueprint $table){
             //user_id
             $table->foreignId('user_id')->constrained();
         });

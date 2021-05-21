@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\v1\ProductController;
 use App\Http\Controllers\API\v1\CategoryController;
+use App\Http\Controllers\API\v1\OrderController;
 use App\Http\Controllers\API\v1\ShoppingbagController;
 use App\Http\Controllers\API\v1\UserDetailController;
 use App\Http\Controllers\API\v1\UserActivationController;
@@ -38,10 +39,23 @@ Route::middleware('auth:api')->get('/v1/category', [CategoryController::class, '
 Route::middleware('auth:api')->get('/v1/product/all', [ProductController::class, 'all']);
 Route::middleware('auth:api')->get('/v1/product/search', [ProductController::class, 'allByKeyword']);
 Route::middleware('auth:api')->get('/v1/product/category', [ProductController::class, 'allByCategory']);
-Route::middleware('auth:api')->get('/v1/product={product_id}', [ProductController::class, 'eachByProductID']);
 Route::middleware('auth:api')->get('/v1/product/version={version_id}', [ProductController::class, 'eachByVersionID']);
+Route::middleware('auth:api')->get('/v1/product={product_id}', [ProductController::class, 'eachByProductID']);
 
 //ShoppingbagController
 Route::middleware('auth:api')->post('/v1/shoppingbag/add', [ShoppingbagController::class, 'add']);
 Route::middleware('auth:api')->post('/v1/shoppingbag/delete', [ShoppingbagController::class, 'delete']);
 Route::middleware('auth:api')->get('/v1/shoppingbag/show', [ShoppingbagController::class, 'show']);
+
+//OrderController
+Route::middleware('auth:api')->post('/v1/checkout/add', [OrderController::class, 'add']);
+Route::middleware('auth:api')->get('/v1/checkout/update={order_id}', [OrderController::class, 'updateStatus']);
+Route::middleware('auth:api')->get('/v1/checkout/order={order_id}', [OrderController::class, 'showByOrderID']);
+Route::middleware('auth:api')->post('/v1/checkout', [OrderController::class, 'showByStatus']);
+
+
+    //TODO :
+    // 1. samain semua output controller mau berupa object atau array
+    // 2. hidden data-data yang gak perlu
+    // 3. ubah ke post biar di inputannya dari body (checkout/update & checkout/order)
+    // 4. tambahin limit ke category buat di Home app

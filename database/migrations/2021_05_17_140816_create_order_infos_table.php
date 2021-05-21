@@ -5,7 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
 
-class CreateOrderStatusesTable extends Migration
+class CreateOrderInfosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class CreateOrderStatusesTable extends Migration
      */
     public function up()
     {
-        Schema::create('order_statuses', function (Blueprint $table) {
+        Schema::create('order_infos', function (Blueprint $table) {
             $table->id();
             $table->integer('order_total')->default(0)->nullable(false);
             $table->text('order_receiver')->nullable(false);
@@ -33,7 +33,7 @@ class CreateOrderStatusesTable extends Migration
     public function down()
     {
         DB::statement('SET FOREIGN_KEY_CHECKS=0');
-        Schema::dropIfExists('order_statuses');
+        Schema::dropIfExists('order_infos');
         DB::statement('SET FOREIGN_KEY_CHECKS=1');
     }
 }

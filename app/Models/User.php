@@ -51,7 +51,7 @@ class User extends Authenticatable
         return $this->hasMany(Shoppingbag::class);
     }
 
-    public function orderStatuses(){
-        return $this->hasMany(OrderStatus::class);
+    public function orderInfos(){
+        return $this->hasMany(OrderInfo::class);
     }
 }

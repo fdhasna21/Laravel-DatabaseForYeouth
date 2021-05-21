@@ -54,15 +54,12 @@ class ShoppingbagController extends Controller
         $user = $request->user();
 
         $sb = Shoppingbag::where('user_id', '=', $user->id)
-                ->where('order_statuses_id', null)->get();
-
-        $sb->makeHidden(['order_statuses_id', 'user_id', 'version_product_id', 'created_at', 'updated_at']);
+                ->where('order_info_id', null)->get();
 
         foreach($sb as $eachVersion){
-            $version_id = $eachVersion->id;
-            $product_id = $eachVersion->version_product_id;
+            $version_id = $eachVersion->version_product_id;
             $version = VersionProduct::find($version_id);
-            $product = MainProduct::find($product_id);
+            $product = MainProduct::where('id', '=', $version->main_product_id)->first();
             $eachVersion->product_detail = collect([
                 'product_id' => $product->id,
                 'product_name' => $product->product_name,
@@ -71,12 +68,8 @@ class ShoppingbagController extends Controller
                 'version_stock' => $version->version_stock
                 ]);
         }
+
+        $sb->makeHidden(['order_info_id', 'user_id', 'version_product_id','created_at', 'updated_at']);
         return response(['shoppingbag' => $sb]);
     }
-
-    //TODO :
-    // 1. samain semua output controller mau berupa object atau array
-    // 2. hidden data-data yang gak perlu
-    // 3. bikin order controller
-    // 4. ubah ke post biar di inputannya dari body
 }

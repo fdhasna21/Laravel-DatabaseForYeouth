@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\MainProduct;
 use App\Http\Traits\StringAsPrimary;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -16,8 +15,8 @@ class Shoppingbag extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function orderStatus(){
-        return $this->belongsTo(OrderStatus::class);
+    public function orderInfo(){
+        return $this->belongsTo(OrderInfo::class);
     }
 
     public function versionProducts(){

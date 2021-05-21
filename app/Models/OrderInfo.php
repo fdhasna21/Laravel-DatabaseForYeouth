@@ -2,11 +2,10 @@
 
 namespace App\Models;
 
-use App\Http\Traits\StringAsPrimary;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class OrderStatus extends Model
+class OrderInfo extends Model
 {
     use HasFactory;
 
