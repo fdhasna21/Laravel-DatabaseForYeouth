@@ -14,21 +14,6 @@ class UserDetailController extends Controller
         return response($user);
     }
 
-    public function create(Request $request){
-        $userID = $request->user()->id;
-        $request->validate([
-            'address' => 'required',
-            'phone' => 'required|numeric'
-        ]);
-
-        $detail = new UserDetail();
-        $detail->user_address = $request->address;
-        $detail->user_phone = $request->phone;
-        $detail->user_id = $userID;
-        $detail->save();
-        return response(['success' => true]);
-    }
-
     public function update(Request $request){
         $userID = $request->user()->id;
         $detail = UserDetail::where('user_id', '=', $userID)->first();
@@ -47,3 +32,19 @@ class UserDetailController extends Controller
         return response(['success' => true]);
     }
 }
+
+    //Already auto create UserDetail in UserActivationController (regis)
+    // public function create(Request $request){
+    //     $userID = $request->user()->id;
+    //     $request->validate([
+    //         'address' => 'required',
+    //         'phone' => 'required|numeric'
+    //     ]);
+
+    //     $detail = new UserDetail();
+    //     $detail->user_address = $request->address;
+    //     $detail->user_phone = $request->phone;
+    //     $detail->user_id = $userID;
+    //     $detail->save();
+    //     return response(['success' => true]);
+    // }

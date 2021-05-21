@@ -2,11 +2,12 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
+use App\Models\MainProduct;
 use App\Models\CategoryGroup;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use App\Models\CategoryMerchandise;
-use App\Models\MainProduct;
 use Illuminate\Support\Facades\Hash;
 
 class DummyDatabase extends Seeder
@@ -25,6 +26,21 @@ class DummyDatabase extends Seeder
         return CategoryMerchandise::select('id')->where('merchandise_name', 'LIKE', "%$merchandise%")->value('id');
     }
 
+    private function insertUser(String $email, String $name, String $password){
+        DB::table('users')->insert([
+            'name' => $name,
+            'email' => $email,
+            'password' => Hash::make($password),
+            'created_at' => now()
+        ]);
+
+        $user_id = User::where('email', '=', $email)->value('id');
+
+        DB::table('user_details')->insert([
+            'user_id' => $user_id
+        ]);
+    }
+
     private function insertMainProducts(String $name, String $category, String $group, String $merchandise, array $version){
         DB::table('main_products')->insert([
             'product_name' => $name,
@@ -41,33 +57,27 @@ class DummyDatabase extends Seeder
             'main_product_id' => $product_id
         ]);
         }
-
     }
 
 
     public function run()
     {
-        // DB::table('users')->delete();
-        // DB::table('version_products')->delete();
-        // DB::table('main_products')->delete();
-        // DB::table('category_groups')->delete();
-        // DB::table('category_merchandises')->delete();
+        DB::table('users')->delete();
+        DB::table('version_products')->delete();
+        DB::table('main_products')->delete();
+        DB::table('category_groups')->delete();
+        DB::table('category_merchandises')->delete();
 
-        // // \App\Models\User::factory(5)->create();
-        // DB::table('users')->insert([
-        //     'name' => 'Nda',
-        //     'email' => 'fdh@gmail.com',
-        //     'password' => Hash::make('admin'),
-        //     'created_at' => now()
-        // ]);
+        // \App\Models\User::factory(5)->create();
+        $this->insertUser('fdh@gmail.com', 'Nda', 'admin');
 
-        // DB::table('category_groups')->insert(['group_name' => 'Monsta X']);
-        // DB::table('category_groups')->insert(['group_name' => 'GOT7']);
-        // DB::table('category_groups')->insert(['group_name' => 'DAY6']);
+        DB::table('category_groups')->insert(['group_name' => 'Monsta X']);
+        DB::table('category_groups')->insert(['group_name' => 'GOT7']);
+        DB::table('category_groups')->insert(['group_name' => 'DAY6']);
 
-        // DB::table('category_merchandises')->insert(['merchandise_name' => 'Album']);
-        // DB::table('category_merchandises')->insert(['merchandise_name' => 'Lightstick']);
-        // DB::table('category_merchandises')->insert(['merchandise_name' => 'Season Greeting']);
+        DB::table('category_merchandises')->insert(['merchandise_name' => 'Album']);
+        DB::table('category_merchandises')->insert(['merchandise_name' => 'Lightstick']);
+        DB::table('category_merchandises')->insert(['merchandise_name' => 'Season Greeting']);
 
         $this->insertMainProducts('The Book of Us: Negentropy - Chaos swallowed up in love',
             '7th Korean Mini-Album', 'DAY6', 'Album', array('One& ver.', 'Only ver.'));

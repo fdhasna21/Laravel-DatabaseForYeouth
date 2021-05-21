@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
+use App\Models\Shoppingbag;
 use App\Http\Traits\StringAsPrimary;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class MainProduct extends Model
 {

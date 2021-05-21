@@ -9,16 +9,13 @@ use Illuminate\Database\Eloquent\Model;
 class VersionProduct extends Model
 {
     use HasFactory;
-    //1 VersionProduct : 1 MainProduct
-    //many VersionProduct : many Shoppingbag
+    //1 VersionProduct : 1 MainProduct, 1 ShoppingBag
 
     public function mainProduct(){
         return $this->belongsTo(MainProduct::class);
     }
 
-    //TODO: benerin many-to-many di VersionProduct
-    public function shoppingbags(){
-        return $this->belongsToMany(Shoppingbag::class);
-                    // ->withPivot('version_product_id', 'shoppingbag_quantity', 'version_stock', 'version_price')
+    public function shoppingbag(){
+        return $this->belongsTo(Shoppingbag::class);
     }
 }

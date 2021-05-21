@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API\v1;
 
 use App\Models\User;
+use App\Models\UserDetail;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -52,6 +53,11 @@ class UserActivationController extends Controller
         $user->email_verified_at= now();
         $user->remember_token= Str::random(10);
         $user->save();
+
+        $detail = new UserDetail();
+        $detail->user_id = value($user->id);
+        $detail->save();
+
 
         return response(['success'=> true]);
     }

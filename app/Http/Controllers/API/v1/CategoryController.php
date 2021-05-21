@@ -16,14 +16,14 @@ class CategoryController extends Controller
         ]);
 
         if($request->by == 'group'){
-            return response(['group' => CategoryGroup::all()]);
+            return response(['group' => CategoryGroup::get()]);
         }
-        else if($request->by == 'merchandise'){
-            return response(['merchandise'=>CategoryMerchandise::all()]);
+        else if($request->by  == 'merchandise'){
+            return response(['merchandise'=>CategoryMerchandise::get()]);
         }
         else{
-            return response(['merchandise'=> CategoryMerchandise::all(),
-                            'group'=>CategoryGroup::all()]);
+            return response(['merchandise'=> CategoryMerchandise::get(),
+                            'group'=>CategoryGroup::get()]);
         }
     }
 }

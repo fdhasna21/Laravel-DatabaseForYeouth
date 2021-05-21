@@ -15,8 +15,8 @@ class CreateUserDetailsTable extends Migration
     {
         Schema::create('user_details', function (Blueprint $table) {
             $table->id();
-            $table->text('user_address');
-            $table->text('user_phone');
+            $table->text('user_address')->nullable();
+            $table->text('user_phone')->nullable();
             $table->timestamps();
 
             //Foreign Key : user_id, image_id
