@@ -10,9 +10,10 @@ use App\Http\Controllers\Controller;
 
 class ProductController extends Controller
 {
+    //TODO : make JSON output without version_products(main_product_id, created_at, updated_at)
     public function all(){
         $products = MainProduct::with('versionProducts')->get();
-        return response(['product' => $products]);
+        return response(['total'=> $products->count(),'product' => $products]);
     }
 
     public function allByCategory(Request $request){
@@ -22,35 +23,37 @@ class ProductController extends Controller
             'limit' => 'numeric'
         ]);
 
-        $products = DB::table('main_products');
+        $all = DB::table('main_products');
         if(isset($request->limit)){
             $limit = $request->limit;
         }
         else{
-            $limit = $products->count();
+            $limit = $all->count();
         }
 
         if(isset($request->group) && !isset($request->merchandise)){
-            return response(['product' => MainProduct::where('category_group_id', '=', $request->group)
-                                ->take($limit)->with('versionProducts')->get()]);
+            $products = MainProduct::where('category_group_id', '=', $request->group)
+                                     ->take($limit)->with('versionProducts')->get();
         }
         else if(!isset($request->group) && isset($request->merchandise)){
-            return response(['product' => MainProduct::where('category_merchandise_id', '=', $request->merchandise)
-                                ->take($limit)->with('versionProducts')->get()]);
+            $products = MainProduct::where('category_merchandise_id', '=', $request->merchandise)
+                                    ->take($limit)->with('versionProducts')->get();
         }
         else{
-            return response(['product' => MainProduct::where('category_group_id', '=', $request->group)
-                                ->where('category_merchandise_id', '=', $request->merchandise)
-                                ->take($limit)->with('versionProducts')->get()]);
+            $products = MainProduct::where('category_group_id', '=', $request->group)
+                                    ->where('category_merchandise_id', '=', $request->merchandise)
+                                    ->take($limit)->with('versionProducts')->get();
         }
+        return response(['total' => $products->count(), 'product' => $products]);
     }
 
     public function allByKeyword(Request $request){
         $keyword = $request->keyword;
-        return response(['product' => MainProduct::where('product_name', 'LIKE', "%$keyword%")
-                        ->orwhere('product_category', 'LIKE', "%$keyword%")
-                        ->orwhere('product_detail', 'LIKE', "%$keyword%")
-                        ->with('versionProducts')->get()]);
+        $products = MainProduct::where('product_name', 'LIKE', "%$keyword%")
+                                    ->orwhere('product_category', 'LIKE', "%$keyword%")
+                                    ->orwhere('product_detail', 'LIKE', "%$keyword%")
+                                    ->with('versionProducts')->get();
+        return response(['total' => $products->count(), 'product' => $products]);
     }
 
     public function eachByProductID(MainProduct $product_id){

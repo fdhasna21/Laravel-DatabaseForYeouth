@@ -70,6 +70,6 @@ class ShoppingbagController extends Controller
         }
 
         $sb->makeHidden(['order_info_id', 'user_id', 'version_product_id','created_at', 'updated_at']);
-        return response(['shoppingbag' => $sb]);
+        return response(['total'=> $sb->count(),'shoppingbag' => $sb]);
     }
 }

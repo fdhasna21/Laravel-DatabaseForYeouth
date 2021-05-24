@@ -58,23 +58,26 @@ class OrderController extends Controller
 
 
     public function showByStatus(Request $request){
+        //TODO : make JSON output with order(total_items) and without shoppingbags(created_at, updated_at, user_id, order_info_id)
         $user = $request->user();
         $request->validate([
             'status' =>'required|in:Processed,Shipping,Delivered',
             'limit' => 'numeric'
         ]);
 
-        $orders = DB::table('order_infos');
+        $all = DB::table('order_infos');
         if(isset($request->limit)){
             $limit = $request->limit;
         }
         else{
-            $limit = $orders->count();
+            $limit = $all->count();
         }
 
-        return response(['order' => OrderInfo::where('order_state', '=', $request->status)
-                            ->where('user_id', '=', $user->id)
-                            ->take($limit)
-                            ->with('shoppingbags')->get()]);
+        $orders = OrderInfo::where('order_state', '=', $request->status)
+                                ->where('user_id', '=', $user->id)
+                                ->take($limit)
+                                ->with('shoppingbags')->get();
+
+        return response(['total' => $orders->count(), 'order' =>$orders]);
     }
 }

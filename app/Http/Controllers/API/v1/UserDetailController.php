@@ -10,7 +10,8 @@ class UserDetailController extends Controller
 {
     public function show(Request $request){
         $user = $request->user();
-        $user->userDetail;
+        $user->userDetail->makeHidden(['id','user_id','created_at', 'updated_at']);
+        $user->makeHidden(['email_verified_at']);
         return response($user);
     }
 

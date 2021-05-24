@@ -55,7 +55,6 @@ Route::middleware('auth:api')->post('/v1/checkout', [OrderController::class, 'sh
 
 
     //TODO :
-    // 1. samain semua output controller mau berupa object atau array
-    // 2. hidden data-data yang gak perlu
-    // 3. ubah ke post biar di inputannya dari body (checkout/update & checkout/order)
-    // 4. tambahin limit ke category buat di Home app
+    // 1. makeHidden JSON output that don't want to be used (ProductsController, checkout/update)
+    // 2. change get into post to make input data from body (checkout/update & checkout/order)
+    // 3. add others algorithm (AdminController to add products, categories, etc, OrderController to calculate prices, supplies, etc)
