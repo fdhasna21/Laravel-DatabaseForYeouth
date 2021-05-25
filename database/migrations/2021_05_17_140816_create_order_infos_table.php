@@ -16,7 +16,7 @@ class CreateOrderInfosTable extends Migration
     {
         Schema::create('order_infos', function (Blueprint $table) {
             $table->id();
-            $table->integer('order_total')->default(0)->nullable(false);
+            $table->integer('order_total')->default(0)->nullable(false)->unsigned();
             $table->text('order_receiver')->nullable(false);
             $table->enum('order_state', ['Processed', 'Shipping', 'Delivered'])->nullable(false);
             $table->timestamps();

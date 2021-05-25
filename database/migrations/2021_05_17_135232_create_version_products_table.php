@@ -18,9 +18,10 @@ class CreateVersionProductsTable extends Migration
             $table->id();
             $table->string('version_name')->nullable(false);
             $table->text('version_detail')->default('');
-            $table->integer('version_price')->default(0)->nullable(false);
-            $table->integer('version_stock')->default(0)->nullable(false);
-            $table->integer('version_sold')->default(0)->nullable(false);
+            $table->integer('version_price_created')->default(0)->nullable(false)->unsigned();
+            $table->integer('version_price')->default(0)->nullable(false)->unsigned();
+            $table->integer('version_stock')->default(0)->nullable(false)->unsigned();
+            $table->integer('version_sold')->default(0)->nullable(false)->unsigned();
             $table->timestamps();
 
             //Foreign Key : product_id, image_id

@@ -16,7 +16,8 @@ class CreateShoppingbagsTable extends Migration
     {
         Schema::create('shoppingbags', function (Blueprint $table) {
             $table->id();
-            $table->integer('shoppingbag_quantity')->nullable(false);
+            $table->integer('product_price')->nullable(false)->unsigned()->default(0);
+            $table->integer('shoppingbag_quantity')->nullable(false)->unsigned()->default(0);
             $table->timestamps();
 
             //Foreign Key : version_id, user_id

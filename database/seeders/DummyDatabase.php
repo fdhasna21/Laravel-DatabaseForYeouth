@@ -51,10 +51,13 @@ class DummyDatabase extends Seeder
 
         $product_id = MainProduct::where('product_name', '=', $name)->value('id');
 
-        foreach($version as $version_name){
+        foreach($version as $eachVersion){
             DB::table('version_products')->insert([
-            'version_name' => $version_name,
-            'main_product_id' => $product_id
+            'version_name' => $eachVersion[0],
+            'main_product_id' => $product_id,
+            'version_stock' => $eachVersion[1],
+            'version_price' => $eachVersion[2],
+            'version_price_created' => $eachVersion[2]
         ]);
         }
     }
@@ -80,21 +83,21 @@ class DummyDatabase extends Seeder
         DB::table('category_merchandises')->insert(['merchandise_name' => 'Season Greeting']);
 
         $this->insertMainProducts('The Book of Us: Negentropy - Chaos swallowed up in love',
-            '7th Korean Mini-Album', 'DAY6', 'Album', array('One& ver.', 'Only ver.'));
+            '7th Korean Mini-Album', 'DAY6', 'Album', array(['One& ver.', 10, 250000], ['Only ver.', 20, 250000]));
 
         $this->insertMainProducts('The Book of Us : Entropy',
-           '3rd Korean Studio Album', 'DAY6', 'Album', array('Sweet ver.', 'Chaos ver.'));
+           '3rd Korean Studio Album', 'DAY6', 'Album', array(['Sweet ver.', 50, 300000], ['Chaos ver.', 25, 300000]));
 
         $this->insertMainProducts('DAY6 Official Lightband',
-            'Official Concert Light Stick', 'DAY6', 'Lightstick', array('ver 1', 'ver 2'));
+            'Official Concert Light Stick', 'DAY6', 'Lightstick', array(['ver 1', 40, 270000], ['ver 2', 35, 270000]));
 
         $this->insertMainProducts('Fantasia X',
-            '8th Korean Mini-Album', 'MONSTA X', 'Album', array('ver.1', 'ver.2', 'ver.3', 'ver.4'));
+            '8th Korean Mini-Album', 'MONSTA X', 'Album', array(['ver.1', 30, 320000], ['ver.2', 30, 320000], ['ver.3', 35, 320000], ['ver.4', 20, 320000]));
 
         $this->insertMainProducts('All About Luv',
-           '1st English Studio Album', 'MONSTA X', 'Album', array('ver.1', 'ver.2', 'ver.3', 'ver.4'));
+           '1st English Studio Album', 'MONSTA X', 'Album', array(['ver.1', 15, 350000], ['ver.2', 10, 350000], ['ver.3', 15, 350000], ['ver.4', 25, 350000]));
 
         $this->insertMainProducts('MONSTA X Official Light Stick',
-            'Official Concert Light Stick', 'MONSTA X', 'Lightstick', array('ver 1', 'ver 2'));
+            'Official Concert Light Stick', 'MONSTA X', 'Lightstick', array(['ver 1', 65, 370000], ['ver 2', 60, 370000]));
     }
 }

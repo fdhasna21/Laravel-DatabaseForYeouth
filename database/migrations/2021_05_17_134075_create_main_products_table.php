@@ -20,9 +20,9 @@ class CreateMainProductsTable extends Migration
             $table->string('product_category')->nullable(false);
             $table->text('product_detail')->default('')->nullable(false);
             $table->date('product_release')->default(now())->nullable(false);
-            $table->integer('product_sold')->default(0)->nullable(false);
+            $table->integer('product_sold')->default(0)->nullable(false)->unsigned();
             $table->float('product_rate', 3, 2)->default(0.00)->nullable(false);
-            $table->integer('product_wishlisted')->default(0)->nullable(false);
+            $table->integer('product_wishlisted')->default(0)->nullable(false)->unsigned();
             $table->timestamps();
 
             //Foreign Key : version_id, image_id, category_id, group_id

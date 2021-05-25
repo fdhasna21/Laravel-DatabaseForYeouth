@@ -7,17 +7,20 @@ use App\Models\Shoppingbag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\MainProduct;
+use App\Models\VersionProduct;
 use Ramsey\Uuid\Type\Integer;
 
 class OrderController extends Controller
 {
     public function add(Request $request){
+        //TODO : allow user to choose products for checkout
         $user = $request->user();
         $userDetail = $user->userDetail;
-        //TODO : update for order_total, if userDetail->user_address and user_phone null, return error need those be filled. then in apps will direct to add userDetail XML
+        //TODO : if userDetail->user_address and user_phone null, return error need those be filled. then in apps will direct to add userDetail XML
 
-        $sb = Shoppingbag::where('user_id', '=', $user->id)
-                ->where('order_info_id', null)->get();
+        $sb = Shoppingbag::where('order_info_id', null)
+                ->where('user_id', '=', $user->id)->get();
 
         if(count($sb) > 0){
             $order = new OrderInfo();
@@ -25,8 +28,17 @@ class OrderController extends Controller
             $order->order_receiver = "$user->name";
             $order->save();
             foreach($sb as $eachSb){
+                $version_table = VersionProduct::where('id', '=', $eachSb->version_product_id)->find($eachSb->version_product_id);
+                $product_id = $version_table->main_product_id;
+                $product_table = MainProduct::where('id', '=', $product_id)->find($product_id);
                 $eachSb->order_info_id = $order->id;
+                $order->order_total += $eachSb->shoppingbag_quantity * $eachSb->product_price;
+                $version_table->version_sold += $eachSb->shoppingbag_quantity;
+                $product_table->product_sold += $eachSb->shoppingbag_quantity;
+                $order->save();
                 $eachSb->save();
+                $version_table->save();
+                $product_table->save();
             }
             return response(['success' => 'added']);
         }
