@@ -2,20 +2,23 @@
 
 namespace App\Models;
 
-use App\Http\Traits\StringAsPrimary;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class VersionProduct extends Model
 {
     use HasFactory;
-    //1 VersionProduct : 1 MainProduct, 1 ShoppingBag
+    //1 VersionProduct : 1 MainProduct, 1 ShoppingBag, many Image
 
     public function mainProduct(){
         return $this->belongsTo(MainProduct::class);
     }
 
     public function shoppingbag(){
-        return $this->belongsTo(Shoppingbag::class);
+        return $this->hasMany(Shoppingbag::class);
+    }
+
+    public function image(){
+        return $this->hasMany(Image::class);
     }
 }

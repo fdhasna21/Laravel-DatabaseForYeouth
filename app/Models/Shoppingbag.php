@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Http\Traits\StringAsPrimary;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -20,7 +19,7 @@ class Shoppingbag extends Model
     }
 
     public function versionProducts(){
-        return $this->hasMany(VersionProduct::class);
+        return $this->belongsTo(VersionProduct::class);
     }
 
     public function productDetail(){

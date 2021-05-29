@@ -8,6 +8,8 @@ use App\Models\CategoryGroup;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use App\Models\CategoryMerchandise;
+use App\Models\UserDetail;
+use App\Models\VersionProduct;
 use Illuminate\Support\Facades\Hash;
 
 class DummyDatabase extends Seeder
@@ -27,60 +29,60 @@ class DummyDatabase extends Seeder
     }
 
     private function insertUser(String $email, String $name, String $password){
-        DB::table('users')->insert([
-            'name' => $name,
-            'email' => $email,
-            'password' => Hash::make($password),
-            'created_at' => now()
-        ]);
+        $user = new User();
+        $user->name = $name;
+        $user->email = $email;
+        $user->password = Hash::make($password);
+        $user->save();
 
-        $user_id = User::where('email', '=', $email)->value('id');
-
-        DB::table('user_details')->insert([
-            'user_id' => $user_id
-        ]);
+        $user_detail = new UserDetail();
+        $user_detail->user_id = $user->id;
+        $user_detail->save();
     }
 
     private function insertMainProducts(String $name, String $category, String $group, String $merchandise, array $version){
-        DB::table('main_products')->insert([
-            'product_name' => $name,
-            'product_category' => $category,
-            'category_group_id' => $this->getGroupID($group),
-            'category_merchandise_id' => $this->getMerchandiseID($merchandise)
-        ]);
-
-        $product_id = MainProduct::where('product_name', '=', $name)->value('id');
+        $product = new MainProduct();
+        $product->product_name = $name;
+        $product->product_category = $category;
+        $product->category_group_id = $this->getGroupID($group);
+        $product->category_merchandise_id = $this->getMerchandiseID($merchandise);
+        $product->save();
 
         foreach($version as $eachVersion){
-            DB::table('version_products')->insert([
-            'version_name' => $eachVersion[0],
-            'main_product_id' => $product_id,
-            'version_stock' => $eachVersion[1],
-            'version_price' => $eachVersion[2],
-            'version_price_created' => $eachVersion[2]
-        ]);
+            $version = new VersionProduct();
+            $version->version_name = $eachVersion[0];
+            $version->main_product_id = $product->id;
+            $version->version_stock = $eachVersion[1];
+            $version->version_price = $eachVersion[2];
+            $version->version_price_created =$eachVersion[2];
+            $version->save();
         }
+    }
+
+    private function insertCategoryGroup(String $name){
+        $group = new CategoryGroup();
+        $group->group_name = $name;
+        $group->save();
+    }
+
+    private function insertCategoryMerchandise(String $name){
+        $group = new CategoryMerchandise();
+        $group->merchandise_name = $name;
+        $group->save();
     }
 
 
     public function run()
     {
-        DB::table('users')->delete();
-        DB::table('version_products')->delete();
-        DB::table('main_products')->delete();
-        DB::table('category_groups')->delete();
-        DB::table('category_merchandises')->delete();
-
         // \App\Models\User::factory(5)->create();
         $this->insertUser('fdh@gmail.com', 'Nda', 'admin');
 
-        DB::table('category_groups')->insert(['group_name' => 'Monsta X']);
-        DB::table('category_groups')->insert(['group_name' => 'GOT7']);
-        DB::table('category_groups')->insert(['group_name' => 'DAY6']);
-
-        DB::table('category_merchandises')->insert(['merchandise_name' => 'Album']);
-        DB::table('category_merchandises')->insert(['merchandise_name' => 'Lightstick']);
-        DB::table('category_merchandises')->insert(['merchandise_name' => 'Season Greeting']);
+        $this->insertCategoryGroup('Monsta X');
+        $this->insertCategoryGroup('GOT7');
+        $this->insertCategoryGroup('DAY6');
+        $this->insertCategoryMerchandise('Album');
+        $this->insertCategoryMerchandise('Lightstick');
+        $this->insertCategoryMerchandise('Season Greeting');
 
         $this->insertMainProducts('The Book of Us: Negentropy - Chaos swallowed up in love',
             '7th Korean Mini-Album', 'DAY6', 'Album', array(['One& ver.', 10, 250000], ['Only ver.', 20, 250000]));

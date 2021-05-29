@@ -13,6 +13,10 @@ use Illuminate\Support\Facades\Hash;
 class UserActivationController extends Controller
 {
     public function login(Request $request){
+        $request->validate([
+            'email' => 'required|email|exists:users,email',
+            'password' => 'required'
+        ]);
         $email = $request->email;
         $password = $request->password;
         $user = User::where('email', '=' , $email)->first();
@@ -20,14 +24,11 @@ class UserActivationController extends Controller
             if(Hash::check($password, $user->password)){
                 $user->api_token = Str::random(60);
                 $user->save();
-                return response(['token' => $user->api_token]);
+                return response(['api_token' => $user->api_token]);
             }
             else{
-                return response(['error' => 'The email and password you entered did not match.'], 401);
+                return response(['errors' => ['password' => 'The email and password you entered did not match.']], 401);
             }
-        }
-        else{
-            return response(['error' => 'Email is not registered.'], 401);
         }
     }
 

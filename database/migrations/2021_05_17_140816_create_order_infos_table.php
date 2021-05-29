@@ -19,7 +19,9 @@ class CreateOrderInfosTable extends Migration
             $table->integer('order_total')->default(0)->nullable(false)->unsigned();
             $table->text('order_receiver')->nullable(false);
             $table->enum('order_state', ['Processed', 'Shipping', 'Delivered'])->nullable(false);
-            $table->timestamps();
+            $table->timestamp('created_at')->nullable(true);
+            //$table->timestamps();
+
 
             //Foreign Key : user_id, shopping_id
         });

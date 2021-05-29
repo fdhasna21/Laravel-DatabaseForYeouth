@@ -17,7 +17,7 @@ class CreateUserDetailsTable extends Migration
             $table->id();
             $table->text('user_address')->nullable();
             $table->text('user_phone')->nullable();
-            $table->timestamps();
+            $table->timestamp('updated_at')->nullable();
 
             //Foreign Key : user_id, image_id
         });

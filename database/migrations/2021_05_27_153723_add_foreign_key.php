@@ -19,6 +19,21 @@ class AddForeignKey extends Migration
             $table->foreignId('user_id')->constrained();
         });
 
+        Schema::table('user_wishlists', function(Blueprint $table){
+            //user_id, main_product_id
+            $table->foreignId('user_id')->constrained();
+            $table->foreignId('main_product_id')->constrained();
+        });
+
+        Schema::table('images', function(Blueprint $table){
+            //main_product_id, verson_product_id, user_detail_id, category_group_id, category_merchandise_id
+            $table->foreignId('user_id')->nullable()->constrained();
+            $table->foreignId('main_product_id')->nullable()->constrained();
+            $table->foreignId('version_product_id')->nullable()->constrained();
+            $table->foreignId('category_group_id')->nullable()->constrained();
+            $table->foreignId('category_merchandise_id')->nullable()->constrained();
+        });
+
         Schema::table('main_products', function (Blueprint $table) {
             //category_merchandise_id, category_group_id, image_id
             $table->foreignId('category_merchandise_id')->constrained()->onUpdate('CASCADE');

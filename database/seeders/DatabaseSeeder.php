@@ -14,5 +14,6 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([DummyDatabase::class]);
+        //\App\Models\User::factory(5)->create();
     }
 }

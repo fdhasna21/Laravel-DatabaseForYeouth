@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
@@ -42,9 +42,17 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    //1 User : 1 UserDetail, many Shoppingbag, many OrderStatus
+    //1 User : 1 UserDetail, many UserWishlist, 1 Image, many Shoppingbag, many OrderStatus
     public function userDetail(){
         return $this->hasOne(UserDetail::class);
+    }
+
+    public function userWishlists(){
+        return $this->hasMany(UserWishlist::class);
+    }
+
+    public function image(){
+        return $this->hasOne(Image::class);
     }
 
     public function shoppingbags(){

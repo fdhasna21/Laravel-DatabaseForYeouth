@@ -2,16 +2,19 @@
 
 namespace App\Models;
 
-use App\Http\Traits\StringAsPrimary;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class CategoryGroup extends Model
 {
     use HasFactory;
 
-    //1 CategoryGroup : many ProductMain
+    //1 CategoryGroup : many ProductMain, many Image
     public function mainProducts(){
-        return $this->hasMany(ProductMain::class);
+        return $this->hasMany(MainProduct::class);
+    }
+
+    public function image(){
+        return $this->hasMany(Image::class);
     }
 }

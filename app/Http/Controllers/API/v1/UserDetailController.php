@@ -17,7 +17,7 @@ class UserDetailController extends Controller
 
     public function update(Request $request){
         $userID = $request->user()->id;
-        $detail = UserDetail::where('user_id', '=', $userID)->first();
+        $detail = UserDetail::where('user_id',  $userID)->first();
         $request->validate([
             'address' => '',
             'phone' => 'numeric'
@@ -30,6 +30,7 @@ class UserDetailController extends Controller
             $detail->user_phone = $request->phone;
         }
         $detail->save();
+        // $user = User::where()
         return response(['success' => true]);
     }
 }
