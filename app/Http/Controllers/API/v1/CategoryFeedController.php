@@ -13,9 +13,9 @@ use Illuminate\Database\Eloquent\Collection;
 
 class CategoryFeedController extends Controller
 {
-    private function byProductSold(Collection $categories, $limit){
+    private function byProductSold(Collection $categories, $limit, $string){
         foreach($categories as $category){
-            if($categories == new CategoryGroup){
+            if($string == "group"){
                 $category->mainProducts = MainProduct::where('category_group_id',  $category->id)->orderBy('product_sold', 'DESC')->take($limit)->get();
             }
             else{
@@ -28,7 +28,7 @@ class CategoryFeedController extends Controller
 
     public function show(Request $request){
         $request->validate([
-            'by' => Rule::in(['group', 'merchandise', 'all']),
+            'by' => Rule::in(['group', 'merchandise']),
             'limit' => 'numeric'
         ]);
 
@@ -40,10 +40,10 @@ class CategoryFeedController extends Controller
             $limit = $products->count();
         }
 
-        $groups = CategoryGroup::get()->makeHidden(['created_at', 'updated_at', 'main_products', 'group_detail']);
-        $this->byProductSold($groups, $limit);
-        $merchandises = CategoryMerchandise::get()->makeHidden(['created_at', 'updated_at']);
-        $this->byProductSold($merchandises, $limit);
+        $groups = CategoryGroup::with('image')->get()->makeHidden(['created_at', 'updated_at', 'main_products', 'group_detail']);
+        //$this->byProductSold($groups, $limit, "group");
+        $merchandises = CategoryMerchandise::with('image')->get()->makeHidden(['created_at', 'updated_at']);
+        //$this->byProductSold($merchandises, $limit, "merchandise");
 
 
         if($request->by == 'group'){
@@ -56,6 +56,37 @@ class CategoryFeedController extends Controller
             return response(['merchandises'=>$merchandises,
                             'groups'=> $groups]);
         }
+    }
+
+//FEEDS
+    private function onlyPrice(Collection $products){
+        foreach($products as $product){
+            $product->versionProducts->makeHidden(['id', 'version_name', 'version_detail', 'version_price_created', 'version_stock', 'version_sold', 'created_at', 'updated_at', 'main_product_id']);
+        }
+        $products->makeHidden(['created_at', 'updated_at', 'product_detail', 'product_release', 'category_merchandise_id', 'category_group_id' ]);
+        return $products;
+    }
+
+    public function allFeeds(Request $request){
+        $request->validate([
+            'limit' => 'numeric'
+        ]);
+
+        $products = DB::table('main_products');
+        if(isset($request->limit)){
+            $limit = $request->limit;
+        }
+        else{
+            $limit = $products->count();
+        }
+
+        $newCollection = MainProduct::with('versionProducts')->with('images')->orderBy('created_at', 'DESC')->take($limit)->get();
+        $trendingMerchandise = MainProduct::with('versionProducts')->with('images')->orderBy('product_rate', 'DESC')->take($limit)->get();
+        $bestSelller = MainProduct::with('versionProducts')->with('images')->orderBy('product_sold', 'DESC')->take($limit)->get();
+
+        return response(["newCollection" => $this->onlyPrice($newCollection),
+                         "trendingMerchandise" => $this->onlyPrice($trendingMerchandise),
+                         "bestSeller" => $this->onlyPrice($bestSelller)]);
     }
 
     public function feedNewCollection(Request $request){
@@ -71,7 +102,10 @@ class CategoryFeedController extends Controller
             $limit = $products->count();
         }
 
-        $products = MainProduct::orderBy('created_at', 'DESC')->take($limit)->get();
+        $products = MainProduct::with('versionProducts')->with('images')->orderBy('created_at', 'DESC')->take($limit)->get();
+        foreach($products as $product){
+            $product->versionProducts->makeHidden(['id', 'version_name', 'version_detail', 'version_price_created', 'version_stock', 'version_sold', 'created_at', 'updated_at', 'main_product_id']);
+        }
         $products->makeHidden(['created_at', 'updated_at', 'product_detail', 'product_release', 'category_merchandise_id', 'category_group_id' ]);
         return response(['products' => $products]);
     }
@@ -89,7 +123,10 @@ class CategoryFeedController extends Controller
             $limit = $products->count();
         }
 
-        $products = MainProduct::orderBy('product_rate', 'DESC')->take($limit)->get();
+        $products = MainProduct::with('versionProducts')->with('images')->orderBy('product_rate', 'DESC')->take($limit)->get();
+        foreach($products as $product){
+            $product->versionProducts->makeHidden(['id', 'version_name', 'version_detail', 'version_price_created', 'version_stock', 'version_sold', 'created_at', 'updated_at', 'main_product_id']);
+        }
         $products->makeHidden(['created_at', 'updated_at', 'product_detail', 'product_release', 'category_merchandise_id', 'category_group_id' ]);
         return response(['products' => $products]);
     }
@@ -107,7 +144,10 @@ class CategoryFeedController extends Controller
             $limit = $products->count();
         }
 
-        $products = MainProduct::orderBy('product_sold', 'DESC')->take($limit)->get();
+        $products = MainProduct::with('versionProducts')->with('images')->orderBy('product_sold', 'DESC')->take($limit)->get();
+        foreach($products as $product){
+            $product->versionProducts->makeHidden(['id', 'version_name', 'version_detail', 'version_price_created', 'version_stock', 'version_sold', 'created_at', 'updated_at', 'main_product_id']);
+        }
         $products->makeHidden(['created_at', 'updated_at', 'product_detail', 'product_release', 'category_merchandise_id', 'category_group_id' ]);
         return response(['products' => $products]);
     }

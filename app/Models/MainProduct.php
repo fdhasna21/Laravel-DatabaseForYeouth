@@ -26,7 +26,7 @@ class MainProduct extends Model
         return $this->hasMany(UserWishlist::class);
     }
 
-    public function image(){
+    public function images(){
         return $this->hasMany(Image::class);
     }
 }

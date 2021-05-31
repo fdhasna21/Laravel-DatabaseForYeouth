@@ -44,11 +44,13 @@ Route::middleware('auth:api')->post('v1/image/delete', [ImageController::class, 
 
 //CategoryFeedController
 Route::middleware('auth:api')->get('/v1/category', [CategoryFeedController::class, 'show']);
+Route::middleware('auth:api')->get('/v1/feeds', [CategoryFeedController::class, 'allFeeds']);
 Route::middleware('auth:api')->get('/v1/feed/newCollection', [CategoryFeedController::class, 'feedNewCollection']);
 Route::middleware('auth:api')->get('/v1/feed/trendingMerchandise', [CategoryFeedController::class, 'freedTrendingMerchandise']);
 Route::middleware('auth:api')->get('/v1/feed/bestSeller', [CategoryFeedController::class, 'feedBestSeller']);
 
 //ProductController
+Route::middleware('auth:api')->get('/v1/products', [ProductController::class, 'products']);
 Route::middleware('auth:api')->get('/v1/product/all', [ProductController::class, 'all']);
 Route::middleware('auth:api')->get('/v1/product/search', [ProductController::class, 'allByKeyword']);
 Route::middleware('auth:api')->get('/v1/product/category', [ProductController::class, 'allByCategory']);

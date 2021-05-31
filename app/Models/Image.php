@@ -32,10 +32,10 @@ class Image extends Model
     }
 
     public function categoryGroup(){
-        return $this->belongsTo(CategoryGroup::class);
+        return $this->hasOne(CategoryGroup::class);
     }
 
     public function categoryMerchandise(){
-        return $this->belongsTo(CategoryMerchandise::class);
+        return $this->hasOne(CategoryMerchandise::class);
     }
 }
